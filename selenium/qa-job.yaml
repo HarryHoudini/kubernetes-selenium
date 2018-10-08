@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: web-qa-automation
+spec:
+  template:
+    spec:
+      containers:
+        - name: web-qa-automation
+          image: 'abhimassive/auto:test'
+          imagePullPolicy: Always
+          env:
+            - name: WEB_DEV
+              value: 'https://appcurator.io'
+            - name: ACCOUNT_PASS
+              value: Pass1234
+            - name: INV_CODE
+              value: abhicadabra
+      restartPolicy: OnFailure
+  backoffLimit: 4

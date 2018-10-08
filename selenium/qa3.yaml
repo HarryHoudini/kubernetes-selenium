@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: web-qa-automation
+spec:
+  template:
+    spec:
+      containers:
+        - name: web-qa-automation
+          image: 'abhimassive/multi:first'
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: env-config
+      restartPolicy: OnFailure
+  backoffLimit: 1

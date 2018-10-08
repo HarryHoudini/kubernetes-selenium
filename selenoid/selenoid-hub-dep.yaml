@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selenoid-hub
+  namespace: development
+  labels:
+    app: selenoid-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: selenoid-hub
+  template:
+    metadata:
+      labels:
+        app: selenoid-hub
+    spec:
+      containers:
+        - name: selenoid-hub
+          image: 'aerokube/selenoid:latest-release'
+          ports:
+            - containerPort: 4444
+          volumeMounts:
+            - name: quota
+              mountPath: /etc/selenoid
+              readOnly: true
+          resources:
+            limits:
+              memory: 1000Mi
+              cpu: '.5'
+      volumes:
+        - name: quota
+          configMap:
+            name: quota
