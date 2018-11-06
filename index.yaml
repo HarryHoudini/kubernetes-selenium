@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  testjob:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2018-11-06T14:15:11.681739+11:00
+    description: A Helm chart for Kubernetes
+    digest: 7485a01f141a6efeb92f1efbcbe2ed6fabf038868a66f097675e9ffb4384019d
+    name: testjob
+    urls:
+    - testjob-0.1.0.tgz
+    version: 0.1.0
+generated: 2018-11-06T14:15:11.680045+11:00
