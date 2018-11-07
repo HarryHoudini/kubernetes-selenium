@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: allure
+  labels:
+    app: allure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: allure
+  template:
+    metadata:
+      labels:
+        app: allure
+    spec:
+      volumes:
+        - name: allure
+          persistentVolumeClaim:
+            claimName: allure-claim-hostpath
+      containers:
+        - name: allure
+          image: "frankescobar/allure-docker-service"
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /app/allure-results
+              name: allure
+          ports:
+            - containerPort: 4040
+            - containerPort: 5050
+          env:
+            - name: CHECK_RESULTS_EVERY_SECONDS
+              value: "1"
+          resources:
+            limits:
+              memory: 64Mi
+              cpu: 250m

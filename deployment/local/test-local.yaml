@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: web-test-1
+spec:
+  template:
+    spec:
+      volumes:
+        - name: allure
+          persistentVolumeClaim:
+            claimName: allure-claim-hostpath
+      containers:
+        - name: web-test-1
+          image: abhimassive/auto:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: qa-config
+          command: ["/bin/sh", "-c"]
+          args:
+            - echo START;
+              yarn run web --browser:chrome_headless;
+              allure generate allure-results --clean;
+              echo END;
+          volumeMounts:
+            - mountPath: /app
+              name: allure
+      restartPolicy: Never
+  backoffLimit: 1
+  activeDeadlineSeconds: 1800

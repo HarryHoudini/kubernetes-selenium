@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-report-web
+  labels:
+    app: test-report-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-report-web
+  template:
+    metadata:
+      labels:
+        app: test-report-web
+    spec:
+      volumes:
+        - name: test-report-web
+          persistentVolumeClaim:
+            claimName: test-report
+      containers:
+        - image: "${DOCKER_IMAGE_NAME}"
+          name: "${CONTAINER_NAME}"
+          volumeMounts:
+            - mountPath: /app/allure-results
+              name: test-report-web
+          ports:
+            - containerPort: 4040
+            - containerPort: 5050
+          env:
+            - name: CHECK_RESULTS_EVERY_SECONDS
+              value: "1"
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: ".5"
+            limits:
+              memory: "1Gi"
+              cpu: ".5"
+      imagePullSecrets:
+        - name: "${SECRET_NAME}"
+      imagePullPolicy: IfNotPresent
+      terminationGracePeriodSeconds: 5
